@@ -1,0 +1,66 @@
+<% if flash[:success] %>
+  <div> <%=flash[:success]%> </div>
+<% elsif flash[:notice] %>
+  <div> <%=flash[:notice] %> </div>
+<% end %>
+<h1><%=@name%></h1>
+<dl>
+  <dt>
+    ID
+  </dt>
+  <dd>
+    <%=@user.id%>
+  </dd>
+  <dt>
+    Edit user
+  </dt>
+  <dd>
+    <form action="/update_user/<%=@user.id%>" method="post">
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="username" value="<%=@user.username%>">
+      <button>Update user</button>
+    </form>
+  </dd>
+</dl>
+<h2>Own photos (<%=@user.own_photos.count%>)</h2>
+<table border="1">
+  <tbody>
+    <tr>
+      <th>
+        Image
+      </th>
+      <th>
+        Owner
+      </th>
+      <th>
+        Caption
+      </th>
+      <th>
+        Posted
+      </th>
+      <th>
+      </th>
+    </tr>
+    <% Photo.where(:owner_id => @user.id).each do |post|%>
+      <tr>
+        <td>
+          <img src="<%=post.image%>">
+        </td>
+        <td>
+          <%=post.poster.username%>
+        </td>
+        <td>
+          <%=post.caption%>
+        </td>
+        <td>
+          <%=post.created_at%>
+        </td>
+        <td>
+          <a href="/photos/<%=post.id%>">
+            Show details
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
