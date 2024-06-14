@@ -28,24 +28,24 @@ class PostController < ApplicationController
 
     def update
         post = Photo.find(params["photo_id"])
-        post.caption = params[:caption]
-        post.image = params[:image_url]
-        if user.valid?
-            user.save
+        post.caption = params["caption"]
+        post.image = params["image_url"]
+        if post.valid?
+            post.save
             flash[:success] = "User Updated."
-            redirect_to("/users/#{user.id}", {:notice => "User updated successfully."})
+            redirect_to("/photos/#{post.id}", {:notice => "User updated successfully."})
         else
-            redirect_to("/users/#{user.id}", {:fail => "User failed to update properly."})
+            redirect_to("/photos/#{post.id}", {:fail => "User failed to update properly."})
         end
     end
 
     def destroy
-        @photo = Photo.find(params[:id])
+        @photo = Photo.find(params["photo_id"])
         if @photo.destroy
             flash[:success] = 'Photo was successfully deleted.'
-            redirect_to("photos/")
+            redirect_to("/photos")
         else
-            redirect_to("photos/#{id}", {:fail => 'Photo failed to be successfully deleted.'})
+            redirect_to("/photos/#{@photo.id}", {:fail => 'Photo failed to be successfully deleted.'})
         end
     end
     
